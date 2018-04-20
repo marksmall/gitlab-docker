@@ -1,0 +1,66 @@
+---
+version: '3'
+services:
+  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: always
+    hostname: 'gitlab.example.com'
+    ports:
+      - '9090:80'
+      - '4443:443'
+      - '2222:22'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.example.com'
+        registry_external_url 'http://gitlab.example.com:1875'
+        pages_external_url 'http://gitlab.example.com:2016'
+        gitlab_rails['gitlab_default_theme'] = 4
+        gitlab_rails['gitlab_email_display_name'] = 'My GitLab CE'
+        gitlab_rails['gitlab_email_enabled'] = true
+        gitlab_rails['gitlab_email_from'] = 'gitlab@gitlab.example.com'
+        gitlab_rails['gitlab_email_reply_to'] = 'admin@gitlab.example.com'
+        gitlab_rails['backup_keep_time'] = 14515200
+        unicorn['worker_timeout'] = 60
+        unicorn['worker_processes'] = 3
+        logging['logrotate_frequency'] = 'weekly'
+        logging['logrotate_rotate'] = 52
+        logging['logrotate_compress'] = 'compress'
+        logging['logrotate_method'] = 'copytruncate'
+        logging['logrotate_delaycompress'] = 'delaycompress'
+        gitlab_rails['lfs_enabled'] = true
+        # gitlab_rails['ldap_enabled'] = true
+        # FIXME: Edit base, bind_dn, host, password, port, user_filter.
+        # gitlab_rails['ldap_servers'] = {"main"=>{"active_directory"=>false, "allow_username_or_email_login"=>true, "attributes"=>{"email"=>["mail", "email", "userPrincipalName"], "first_name"=>"givenName", "last_name"=>"sn", "name"=>"cn", "username"=>["uid", "userid", "sAMAccountName"]}, "base"=>"ou=<ou>,ou=<ou>,dc=<dc>,dc=<dc>,dc=<dc>,dc=<dc>", "bind_dn"=>"gitlab", "host"=>"<hostname>", "label"=>"Astrosat LDAP", "method"=>"ssl", "password"=>"<password>", "port"=>636, "uid"=>"uid", "user_filter"=>"(|(eduniType=100)(eduniType=200)(eduniIDStatus=300))"}}
+        gitlab_rails['db_username'] = 'gitlab'
+        gitlab_rails['db_password'] = 'gitlab'
+        gitlab_rails['db_host'] = 'postgresql'
+        gitlab_rails['db_port'] = 5432
+        gitlab_rails['db_database'] = 'gitlabhq_production'
+        gitlab_rails['db_adapter'] = 'postgresql'
+        gitlab_rails['db_encoding'] = 'utf8'
+        gitlab_rails['redis_host'] = 'redis'
+        gitlab_rails['redis_port'] = 6379
+        gitlab_rails['gitlab_shell_ssh_port'] = 2222
+        # gitlab_rails['nginx'] = {"redirect_http_to_https"=>true, "ssl_certificate"=>"/etc/gitlab/ssl/astrosat.com.crt", "ssl_certificate_key"=>"/etc/gitlab/ssl/astrosat.com.key"}
+        gitlab_rails['time_zone'] = 'UTC'
+        # pages_nginx['redirect_http_to_https'] = true
+        # pages_nginx['ssl_certificate'] = "/etc/gitlab/ssl/astrosat.com.crt"
+        # pages_nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/astrosat.com.key"
+        redis['enable'] = false
+        postgresql['enable'] = false
+    volumes:
+      - '/srv/gitlab/config:/etc/gitlab'
+      - '/srv/gitlab/logs:/var/log/gitlab'
+      - '/srv/gitlab/data:/var/opt/gitlab'
+  redis:
+    image: 'redis:3.0.7-alpine'
+    restart: always
+  postgresql:
+    image: 'postgres:9.6.2-alpine'
+    restart: always
+    environment:
+      - POSTGRES_USER=gitlab
+      - POSTGRES_PASSWORD=gitlab
+      - POSTGRES_DB=gitlabhq_production
+    volumes:
+      - '/data/postgresql:/var/lib/postgresql'
