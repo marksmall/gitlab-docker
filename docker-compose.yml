@@ -11,9 +11,9 @@ services:
       - '2222:22'
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://gitlab.example.com'
-        registry_external_url 'http://gitlab.example.com:1875'
-        pages_external_url 'http://gitlab.example.com:2016'
+        external_url 'https://gitlab.example.com'
+        registry_external_url 'https://gitlab.example.com:1875'
+        pages_external_url 'https://gitlab.example.com:2016'
         gitlab_rails['gitlab_default_theme'] = 4
         gitlab_rails['gitlab_email_display_name'] = 'My GitLab CE'
         gitlab_rails['gitlab_email_enabled'] = true
@@ -41,17 +41,24 @@ services:
         gitlab_rails['redis_host'] = 'redis'
         gitlab_rails['redis_port'] = 6379
         gitlab_rails['gitlab_shell_ssh_port'] = 2222
-        # gitlab_rails['nginx'] = {"redirect_http_to_https"=>true, "ssl_certificate"=>"/etc/gitlab/ssl/astrosat.com.crt", "ssl_certificate_key"=>"/etc/gitlab/ssl/astrosat.com.key"}
+        nginx['listen_port'] = 443
+        nginx['redirect_http_to_https'] = true
+        nginx['ssl_certificate'] = '/etc/gitlab/ssl/gitlab.example.com.crt'
+        nginx['ssl_certificate_key'] = '/etc/gitlab/ssl/gitlab.example.com.key'
+        nginx['ssl_protocols'] = 'TLSv1.1 TLSv1.2'
+        nginx['logrotate_frequency'] = 'weekly'
+        nginx['logrotate_rotate'] = 52
+        nginx['logrotate_compress'] = 'compress'
+        nginx['logrotate_method'] = 'copytruncate'
+        nginx['logrotate_delaycompress'] = 'delaycompress'
         gitlab_rails['time_zone'] = 'UTC'
-        # pages_nginx['redirect_http_to_https'] = true
-        # pages_nginx['ssl_certificate'] = "/etc/gitlab/ssl/astrosat.com.crt"
-        # pages_nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/astrosat.com.key"
         redis['enable'] = false
         postgresql['enable'] = false
     volumes:
       - '/srv/gitlab/config:/etc/gitlab'
       - '/srv/gitlab/logs:/var/log/gitlab'
       - '/srv/gitlab/data:/var/opt/gitlab'
+      - '/srv/gitlab/ssl:/etc/gitlab/ssl'
   redis:
     image: 'redis:3.0.7-alpine'
     restart: always
