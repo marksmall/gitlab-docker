@@ -21,6 +21,14 @@ services:
         gitlab_rails['gitlab_email_from'] = 'gitlab@gitlab.example.com'
         gitlab_rails['gitlab_email_reply_to'] = 'admin@gitlab.example.com'
         gitlab_rails['backup_keep_time'] = 14515200
+        gitlab_rails['smtp_enable'] = true
+        gitlab_rails['smtp_address'] = 'smtp.gitlab.example.com'
+        gitlab_rails['smtp_port'] = 587
+        gitlab_rails['smtp_user_name'] = 'no-reply@gitlab.example.com'
+        gitlab_rails['smtp_password'] = "changeMeToSomethingGood"
+        gitlab_rails['smtp_domain'] = 'gitlab.example.com'
+        gitlab_rails['smtp_authentication'] = 'login'
+        gitlab_rails['smtp_enable_starttls_auto'] = true
         unicorn['worker_timeout'] = 60
         unicorn['worker_processes'] = 3
         logging['logrotate_frequency'] = 'weekly'
