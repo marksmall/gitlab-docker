@@ -82,3 +82,11 @@ services:
       - POSTGRES_DB=gitlabhq_production
     volumes:
       - '/data/postgresql:/var/lib/postgresql'
+  gitlab-runner-1:
+    image: 'gitlab/gitlab-runner:latest'
+    container_name: 'GitLab-Runner-1'
+    restart: 'always'
+    volumes:
+      # The order matters if we are to use docker as the method of spawning runners.
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - '/srv/gitlab-runner/config:/etc/gitlab-runner'
