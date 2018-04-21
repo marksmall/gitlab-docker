@@ -3,7 +3,8 @@ version: '3'
 services:
   gitlab:
     image: 'gitlab/gitlab-ce:latest'
-    restart: always
+    container_name: 'GitLab'
+    restart: 'always'
     hostname: 'gitlab.example.com'
     ports:
       - '9090:80'
@@ -61,10 +62,12 @@ services:
       - '/srv/gitlab/ssl:/etc/gitlab/ssl'
   redis:
     image: 'redis:3.0.7-alpine'
-    restart: always
+    container_name: 'Redis'
+    restart: 'always'
   postgresql:
     image: 'postgres:9.6.2-alpine'
-    restart: always
+    container_name: 'Postgres'
+    restart: 'always'
     environment:
       - POSTGRES_USER=gitlab
       - POSTGRES_PASSWORD=gitlab
