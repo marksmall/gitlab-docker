@@ -37,6 +37,9 @@ services:
         logging['logrotate_method'] = 'copytruncate'
         logging['logrotate_delaycompress'] = 'delaycompress'
         gitlab_rails['lfs_enabled'] = true
+        # gitlab_rails['ldap_enabled'] = true
+        # FIXME: Edit base, bind_dn, host, password, port, user_filter.
+        # gitlab_rails['ldap_servers'] = {"main"=>{"active_directory"=>false, "allow_username_or_email_login"=>true, "attributes"=>{"email"=>["mail", "email", "userPrincipalName"], "first_name"=>"givenName", "last_name"=>"sn", "name"=>"cn", "username"=>["uid", "userid", "sAMAccountName"]}, "base"=>"ou=<ou>,ou=<ou>,dc=<dc>,dc=<dc>,dc=<dc>,dc=<dc>", "bind_dn"=>"gitlab", "host"=>"<hostname>", "label"=>"Astrosat LDAP", "method"=>"ssl", "password"=>"<password>", "port"=>636, "uid"=>"uid", "user_filter"=>"(|(<filter key>=<filter value>)(filter key>=<filter value>)(<filter key>=<filter value>))"}}
         gitlab_rails['db_username'] = 'gitlab'
         gitlab_rails['db_password'] = 'gitlab'
         gitlab_rails['db_host'] = 'postgresql'
