@@ -3,7 +3,7 @@ version: '3'
 services:
   gitlab:
     image: 'gitlab/gitlab-ce:latest'
-    container_name: 'GitLab'
+    container_name: 'gitlab'
     restart: 'always'
     hostname: 'gitlab.example.com'
     ports:
@@ -70,11 +70,11 @@ services:
       - '/srv/gitlab/ssl:/etc/gitlab/ssl'
   redis:
     image: 'redis:3.0.7-alpine'
-    container_name: 'Redis'
+    container_name: 'redis'
     restart: 'always'
   postgresql:
     image: 'postgres:9.6.2-alpine'
-    container_name: 'Postgres'
+    container_name: 'postgres'
     restart: 'always'
     environment:
       - POSTGRES_USER=gitlab
@@ -84,7 +84,7 @@ services:
       - '/data/postgresql:/var/lib/postgresql'
   gitlab-runner-1:
     image: 'gitlab/gitlab-runner:latest'
-    container_name: 'GitLab-Runner-1'
+    container_name: 'gitlab-runner-1'
     restart: 'always'
     volumes:
       # The order matters if we are to use docker as the method of spawning runners.
