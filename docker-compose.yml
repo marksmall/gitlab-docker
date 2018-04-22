@@ -12,7 +12,7 @@ services:
       - '2222:22'
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://gitlab.example.com'
+        external_url 'https://gitlab.example.com:4443'
         registry_external_url 'https://gitlab.example.com:1875'
         pages_external_url 'https://gitlab.example.com:2016'
         gitlab_rails['gitlab_default_theme'] = 4
@@ -37,9 +37,6 @@ services:
         logging['logrotate_method'] = 'copytruncate'
         logging['logrotate_delaycompress'] = 'delaycompress'
         gitlab_rails['lfs_enabled'] = true
-        # gitlab_rails['ldap_enabled'] = true
-        # FIXME: Edit base, bind_dn, host, password, port, user_filter.
-        # gitlab_rails['ldap_servers'] = {"main"=>{"active_directory"=>false, "allow_username_or_email_login"=>true, "attributes"=>{"email"=>["mail", "email", "userPrincipalName"], "first_name"=>"givenName", "last_name"=>"sn", "name"=>"cn", "username"=>["uid", "userid", "sAMAccountName"]}, "base"=>"ou=<ou>,ou=<ou>,dc=<dc>,dc=<dc>,dc=<dc>,dc=<dc>", "bind_dn"=>"gitlab", "host"=>"<hostname>", "label"=>"Astrosat LDAP", "method"=>"ssl", "password"=>"<password>", "port"=>636, "uid"=>"uid", "user_filter"=>"(|(eduniType=100)(eduniType=200)(eduniIDStatus=300))"}}
         gitlab_rails['db_username'] = 'gitlab'
         gitlab_rails['db_password'] = 'gitlab'
         gitlab_rails['db_host'] = 'postgresql'
